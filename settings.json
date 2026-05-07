@@ -1,0 +1,8 @@
+{
+    "systemLanguage": "en",
+    "backgroundColor": "#ffffff",
+    "pdfPath": "example.pdf",
+    "interval": "10000",
+    "port": "5123",
+    "password": null
+}
