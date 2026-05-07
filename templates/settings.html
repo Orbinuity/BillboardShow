@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{lang['settings.title']}}</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .container > a {
+            align-self: flex-end;
+            text-decoration: none;
+        }
+
+        .container > a button {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .container > a button:hover {
+            background-color: #dc2626;
+        }
+
+        form {
+            background-color: #ffffff;
+            width: 100%;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: -10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #1f2937;
+            background-color: #f9fafb;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            border-color: #3b82f6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 100%;
+            height: 46px;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px dashed #d1d5db;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #374151;
+            background-color: #f9fafb;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        input[type="file"]:hover {
+            border-color: #3b82f6;
+            background-color: #ffffff;
+        }
+
+        input[type="file"]::file-selector-button {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-right: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background-color: #d1d5db;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #d1d5db;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #374151;
+            background-color: #f9fafb;
+            cursor: pointer;
+            text-align: center;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .custom-file-upload:hover {
+            border-color: #3b82f6;
+            background-color: #ffffff;
+        }
+
+        #file-name {
+            font-weight: 500;
+        }
+
+        button[type="submit"] {
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2563eb;
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/logout"><button>{{lang['settings.logout']}}</button></a>
+        <form action="/settings_post" method="POST">
+            <label for="systemLanguage">{{lang['settings.systemLanguage']}}</label>
+            <select id="systemLanguage" name="systemLanguage"></select>
+
+            <label for="backgroundColor">{{lang['settings.backgroundColor']}}</label>
+            <input type="color" id="backgroundColor" name="backgroundColor" value="{{settings.backgroundColor}}">
+
+            <label for="pdfPath">{{lang['settings.pdfPath']}}</label>
+            <select id="pdfPath" name="pdfPath"></select>
+
+            <label for="interval">{{lang['settings.interval']}}</label>
+            <input type="number" id="interval" name="interval" step="1" min="1" value="{{settings.interval}}">
+
+            <label for="port">{{lang['settings.port']}}</label>
+            <input type="number" id="port" name="port" step="1" min="1" max="65535" value="{{settings.port}}">
+
+            <label for="password">{{lang['settings.password']}}</label>
+            <input type="password" id="password" name="password">
+
+            <button type="submit">{{lang['settings.submit']}}</button>
+        </form>
+
+        <form action="/upload_pdf" method="POST" enctype=multipart/form-data>
+            <label for="file">{{lang['settings.file']}}</label>
+
+            <label for="file" class="custom-file-upload">
+                <span id="file-name">{{lang['settings.chooseFile']}}</span> </label>
+            <input type="file" id="file" name="file" required>
+
+            <button type="submit">{{lang['settings.submit']}}</button>
+        </form>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file');
+        const fileNameDisplay = document.getElementById('file-name');
+        const defaultText = "{{lang['settings.chooseFile']}}";
+
+        fileInput.addEventListener('change', function(event) {
+            if (event.target.files.length > 0) {
+                fileNameDisplay.textContent = event.target.files[0].name;
+            } else {
+                fileNameDisplay.textContent = defaultText;
+            }
+        });
+
+        function languageSetup(selectId, textToMatch) {
+            const el = document.getElementById(selectId);
+
+            {{langs | tojson}}.forEach(lang => {
+                const op = document.createElement('option');
+                op.value = lang;
+                op.innerText = {{lang | tojson}}['language.'+lang];
+
+                el.appendChild(op)
+            });
+
+            for (let i = 0; i < el.options.length; i++) {
+                if (el.options[i].value === textToMatch) {
+                    el.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        function pdfSetup(selectId, textToMatch) {
+            const el = document.getElementById(selectId);
+
+            {{pdfs | tojson}}.forEach(pdf => {
+                const op = document.createElement('option');
+                op.value = pdf;
+                op.innerText = pdf;
+
+                el.appendChild(op)
+            });
+
+            for (let i = 0; i < el.options.length; i++) {
+                if (el.options[i].value === textToMatch) {
+                    el.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        languageSetup('systemLanguage', '{{settings.systemLanguage}}');
+        pdfSetup('pdfPath', '{{settings.pdfPath}}');
+    </script>
+</body>
+</html>
