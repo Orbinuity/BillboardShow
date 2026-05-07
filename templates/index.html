@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> </title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: {{settings['backgroundColor']}};
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+</head>
+<body>
+    <canvas id="pdf"></canvas>
+
+    <script>
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const url = '{{url_for("static", filename=settings['pdfPath'])}}';
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        let pdfDoc = null,
+            currentPage = 1,
+            pageRendering = false,
+            pageNumPending = null,
+            canvas = document.getElementById('pdf'),
+            ctx = canvas.getContext('2d');
+
+        function renderPage(num) {
+            pageRendering = true;
+            currentPage = num
+
+            pdfDoc.getPage(num).then(function(page) {
+                const ratio = window.devicePixelRatio || 1;
+
+                const unscaledViewport = page.getViewport({ scale: 1 });
+
+                const scale = Math.min(
+                    window.innerWidth / unscaledViewport.width,
+                    window.innerHeight / unscaledViewport.height
+                );
+
+                const viewport = page.getViewport({ scale: scale });
+
+                canvas.width = viewport.width * ratio;
+                canvas.height = viewport.height * ratio;
+
+                canvas.style.width = viewport.width + 'px';
+                canvas.style.height = viewport.height + 'px';
+
+                canvas.style.marginTop = (window.innerHeight - viewport.height) / 2 + 'px';
+                canvas.style.marginLeft = (window.innerWidth - viewport.width) / 2 + 'px';
+
+                ctx.setTransform(1, 0, 0, 1, 0, 0); 
+                ctx.scale(ratio, ratio);
+
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+
+                const renderTask = page.render(renderContext);
+
+                renderTask.promise.then(function() {
+                    pageRendering = false;
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            });
+        }
+
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+
+        async function renderPages() {
+            const pages = [...Array(pdfDoc.numPages).keys()];
+
+            for (const i of pages) {
+                queueRenderPage(i + 1)
+                await sleep({{settings['interval']}});
+            }
+
+            location.reload();
+        }
+
+        function resizeCanvas() { renderPage(currentPage); }
+        window.addEventListener('resize', resizeCanvas);
+
+        pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+
+            renderPages()
+        }).catch(function(error) {
+            console.error('Error loading PDF:', error);
+            alert("{{lang['index.logging']}}");
+        });
+    </script>
+</body>
+</html>
