@@ -20,7 +20,7 @@ def save_settings(setting):
         json.dump(setting, f, indent=4)
 
 def get_lang(settings):
-    with open(f"lang/{settings['systemLanguage']}.json", 'r') as f:
+    with open(os.path.join("lang", f"la{settings['systemLanguage']}.json"), 'r') as f:
         return json.load(f)
 
 @app.route('/')
