@@ -1,7 +1,7 @@
 {
     "settings.title": "सेटिंग्स",
-    "settings.logout": "लॉगआउट",
-    "settings.systemLanguage": "सिस्टम की भाषा",
+    "settings.logout": "लॉग आउट",
+    "settings.systemLanguage": "सिस्टम भाषा",
     "settings.backgroundColor": "पृष्ठभूमि का रंग",
     "settings.pdfPath": "PDF फ़ाइल चुनें",
     "settings.interval": "अंतराल",
@@ -10,10 +10,10 @@
     "settings.file": "PDF अपलोड करें",
     "settings.chooseFile": "एक PDF फ़ाइल चुनें",
     "settings.submit": "सहेजें",
-    "login.title": "लॉगिन",
+    "login.title": "लॉग इन",
     "login.password": "पासवर्ड",
-    "login.submit": "लॉगिन",
-    "index.logging": "PDF लोड नहीं किया जा सका। विवरण के लिए कृपया ब्राउज़र कंसोल देखें।",
+    "login.submit": "लॉग इन करें",
+    "index.logging": "PDF लोड नहीं हो सका। कृपया विवरण के लिए ब्राउज़र कंसोल देखें।",
     "language.en": "अंग्रेज़ी",
     "language.nl": "डच",
     "language.es": "स्पेनिश",
@@ -23,7 +23,7 @@
     "language.pt-BR": "पुर्तगाली",
     "language.ja": "जापानी",
     "language.ar": "अरबी",
-    "language.hi": "हिन्दी",
+    "language.hi": "हिंदी",
     "language.ko": "कोरियाई",
     "language.it": "इतालवी"
 }
