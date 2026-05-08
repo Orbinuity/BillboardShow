@@ -8,7 +8,7 @@
     "settings.port": "ポート",
     "settings.password": "新しいパスワード",
     "settings.file": "PDFをアップロード",
-    "settings.chooseFile": "PDFファイルを選択",
+    "settings.chooseFile": "PDFファイルを選択してください",
     "settings.submit": "保存",
     "login.title": "ログイン",
     "login.password": "パスワード",
