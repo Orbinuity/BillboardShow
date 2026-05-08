@@ -20,9 +20,9 @@ Run the python file:
 python app.py
 ```
 
-The defalt port is `5123` so open `http://0.0.0.0:5123/login` in you browser.
+The default port is `5123`, so open `http://0.0.0.0:5123/login` in you browser.
 
-Use the defalt password `Admin123`.
+Use the default password `Admin123`.
 
 When logged in the first thing you need to do is change the password!
 
